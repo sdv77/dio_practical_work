@@ -23,13 +23,29 @@ class DioClient {
     try {
       final response = await _dio.get('https://api.api-ninjas.com/v1/facts');
       return response.data[0]['fact'];
+    } on DioException catch (e) {
+      print("Ошибка при получении факта: ${e.message}");
+      return 'Error: ${e.response?.data ?? "Unknown error"}';
     } catch (e) {
-      return 'Error: ${e.toString()}';
+      print("Неизвестная ошибка: $e");
+      return 'Error: $e';
+    }
+  }
+
+  Future<String> getJoke() async {
+    try {
+      final response = await _dio.get('https://api.api-ninjas.com/v1/jokes');
+      return response.data[0]['joke'];
+    } on DioException catch (e) {
+      print("Ошибка при получении шутки: ${e.message}");
+      return 'Error: ${e.response?.data ?? "Unknown error"}';
+    } catch (e) {
+      print("Неизвестная ошибка: $e");
+      return 'Error: $e';
     }
   }
 }
 
-// Настройка GetIt
 final getIt = GetIt.instance;
 
 void setupLocator() {

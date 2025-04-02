@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'dio_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dio_client.dart';
+import 'fact_screen.dart';
+import 'joke_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -13,27 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: NetworkPage(),
+      home: HomeScreen(),
     );
   }
 }
 
-class NetworkPage extends StatefulWidget {
-  @override
-  _NetworkPageState createState() => _NetworkPageState();
-}
-
-class _NetworkPageState extends State<NetworkPage> {
-  String _fact = 'Press the button to get a fact';
-  final DioClient _dioClient = GetIt.instance<DioClient>();
-
-  void _fetchData() async {
-    final result = await _dioClient.getFact();
-    setState(() {
-      _fact = result;
-    });
-  }
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +28,24 @@ class _NetworkPageState extends State<NetworkPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_fact),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FactScreen()),
+                );
+              },
+              child: Text('Go to Fact Generator'),
+            ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _fetchData,
-              child: Text('Get Fact'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JokeScreen()),
+                );
+              },
+              child: Text('Go to Joke Generator'),
             ),
           ],
         ),
